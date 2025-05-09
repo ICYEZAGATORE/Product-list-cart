@@ -3,26 +3,26 @@ import React, { useState } from "react";
 function Cart({ cart, setCart }) {
   const [showPopup, setShowPopup] = useState(false);
 
-  const increaseQty = (id) => {
+  const increaseQty = (name) => {
     setCart(
       cart.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+        item.name === name ? { ...item, quantity: item.quantity + 1 } : item
       )
     );
   };
 
-  const decreaseQty = (id) => {
+  const decreaseQty = (name) => {
     setCart(
       cart.map((item) =>
-        item.id === id && item.quantity > 1
+        item.name === name && item.quantity > 1
           ? { ...item, quantity: item.quantity - 1 }
           : item
       )
     );
   };
 
-  const removeItem = (id) => {
-    setCart(cart.filter((item) => item.id !== id));
+  const removeItem = (name) => {
+    setCart(cart.filter((item) => item.name !== name));
   };
 
   const placeOrder = () => {
@@ -51,7 +51,7 @@ function Cart({ cart, setCart }) {
       ) : (
         <>
           {cart.map((item) => (
-            <div key={item.id} className="p-5 grid grid-cols-3 ">
+            <div key={item.name} className="p-5 grid grid-cols-3 ">
               <div className="col-span-2">
                 <h3 className="font-semibold">{item.name}</h3>
                 <p>Price: ${Number(item.price).toFixed(2)}</p>
@@ -60,19 +60,19 @@ function Cart({ cart, setCart }) {
               </div>
               <div className="space-x-3 col-span-1 flex items-center justify-end">
                 <button
-                  onClick={() => increaseQty(item.id)}
+                  onClick={() => increaseQty(item.name)}
                   className="bg-green-600 text-white px-3 rounded"
                 >
                   +
                 </button>
                 <button
-                  onClick={() => decreaseQty(item.id)}
+                  onClick={() => decreaseQty(item.name)}
                   className="bg-yellow-600 text-white px-3 rounded"
                 >
                   -
                 </button>
                 <button
-                  onClick={() => removeItem(item.id)}
+                  onClick={() => removeItem(item.name)}
                   className=" px-3 rounded"
                 >
                   ❌

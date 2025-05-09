@@ -31,17 +31,28 @@ function ProductList() {
   }, [cart]);
 
   const addItem = (product) => {
-    const itemExists = cart.find((item) => item.id === product.id);
-    if (itemExists) {
-      setCart(
-        cart.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        )
-      );
+    
+    console.log("Current cart:", cart);
+    console.log("Adding product:", product);
+
+    
+    const existingItemIndex = cart.findIndex(
+      (item) => item.name === product.name
+    );
+
+    if (existingItemIndex !== -1) {
+      
+      const newCart = [...cart];
+      newCart[existingItemIndex] = {
+        ...newCart[existingItemIndex],
+        quantity: newCart[existingItemIndex].quantity + 1,
+      };
+      setCart(newCart);
+      console.log(`Increased quantity for ${product.name}`);
     } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
+      
+      setCart((prevCart) => [...prevCart, { ...product, quantity: 1 }]);
+      console.log(`Added new product: ${product.name}`);
     }
   };
 
@@ -51,7 +62,7 @@ function ProductList() {
         <div className="grid col-span-2 sm:w-full lg:grid-cols-3 md:grid-cols-2 md:w-full gap-10 bg-white border rounded-md p-5">
           {products.map((product) => (
             <div
-              key={product.id}
+              key={product.name}
               className="product-card bg-white border rounded-md p-5"
             >
               <img
@@ -68,7 +79,6 @@ function ProductList() {
                 <button
                   onClick={() => {
                     addItem(product);
-                    console.log(`${product.name} added to cart!`);
                   }}
                   className=" text-black w-32 p-2 border-1 border-black rounded-full hover:bg-orange-700 focus:ring-4 focus:ring-orange-500"
                 >
